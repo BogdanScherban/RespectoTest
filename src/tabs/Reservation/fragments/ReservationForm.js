@@ -66,13 +66,10 @@ const ReservationForm = ({ devices, currentDate, onSubmit }) => {
             value={device}
             onChange={handleChange}
         >
-            <MenuItem value="">
-                <em>Not selected</em>
-            </MenuItem>
             {
-                devices && devices.map(item => {
+                devices && devices.map((item, key) => {
                     return (
-                        <MenuItem value={item.id}>{item.model}</MenuItem>
+                        <MenuItem key={key} value={item.id}>{item.model}</MenuItem>
                     )
                 })
             }

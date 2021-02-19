@@ -1,9 +1,9 @@
 import moment from 'moment';
 
-export function getReservationsByDay(data) {
+export function getReservationsByDay(total, data) {
     let from = moment(data + ' 00:00:00').format('X');
     let to = moment(data + ' 23:59:59').format('X');
-    return devices.map(item => {
+    return total.map(item => {
         return {
             id: item.id,
             model: item.model,
@@ -16,6 +16,9 @@ export function getReservationsByDay(data) {
 }
 
 export function updateDevicesInfo(data) {
+    if (!data.device) {
+        return devices;
+    }
     return devices.map(item => {
         if (item.id === data.device) {
             let from = Number(moment(data.date + ' ' + data.from).format('X'));
@@ -134,31 +137,6 @@ export const devices = [
                 user_id: 32,
                 from: 1614155400,
                 to: 1614162600,
-            },
-        ],
-    },
-    {
-        id: 4,
-        model: 'Apple iPhone 8',
-        sku: 'APP989UY',
-        reservations: [
-            {
-                id: 12,
-                user_id: 15,
-                from: 1614162600,
-                to: 1614173400,
-            },
-            {
-                id: 13,
-                user_id: 17,
-                from: 1614234600,
-                to: 1614238200,
-            },
-            {
-                id: 14,
-                user_id: 1,
-                from: 1614065400,
-                to: 1614072600,
             },
         ],
     },
