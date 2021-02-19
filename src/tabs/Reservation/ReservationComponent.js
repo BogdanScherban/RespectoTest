@@ -16,7 +16,7 @@ import ReservationForm from './fragments/ReservationForm';
 const useStyles = makeStyles({
     root: {
         height: '100vh',
-        margin: 10,
+        marginTop: 10,
         backgroundColor: '#e7e7e7',
         paddingLeft: 20,
         paddingRight: 20,
@@ -29,7 +29,7 @@ const useStyles = makeStyles({
     }
 });
 
-const ReservationComponent = ({ reservations, loading, getDevicesInfo }) => {
+const ReservationComponent = ({ reservations, loading, getDevicesInfo, handleSubmit }) => {
     const classes = useStyles();
 
     const [tableMode, setTableMode] = useState(true);
@@ -59,9 +59,9 @@ const ReservationComponent = ({ reservations, loading, getDevicesInfo }) => {
                             <AddReservationButton mode={tableMode} switchMode={switchMode} />
                         </Grid>
                     </Grid>
-                    {!tableMode && <ReservationForm devices={reservations} />}
+                    {!tableMode && <ReservationForm devices={reservations} currentDate={currentDate} onSubmit={handleSubmit} />}
                     <Grid container item xs={12} direction="column" justify="space-between" alignItems="stretch">
-                        {loading ?
+                        {!reservations || loading ?
                             <div className={classes.loadingBlock}>
                                 <Typography>Loading...</Typography>
                             </div>

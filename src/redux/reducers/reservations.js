@@ -1,8 +1,10 @@
 import get from "lodash/get";
 import { RESERVATIONS_ACTION } from "../actions/reservations";
+import { devices } from "../dummyData/reservations";
 
 const initialState = {
-    data: [],
+    total: devices,
+    data: null,
     loading: false,
     error: null,
 };
@@ -25,6 +27,17 @@ export default (state = initialState, action) => {
                 ...state,
                 loading: false,
                 data: get(action, "error", null),
+            };
+        case RESERVATIONS_ACTION.RESERVE:
+            return {
+                ...state,
+                loading: true,
+            };
+        case RESERVATIONS_ACTION.RESERVE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                total: get(action, "data", []),
             };
         default:
             return state;

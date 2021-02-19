@@ -2,7 +2,7 @@ import get from "lodash/get";
 import { DEVICES_ACTION } from "../actions/devices";
 
 const initialState = {
-    data: [],
+    data: null,
     loading: false,
     error: null,
 };

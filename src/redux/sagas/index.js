@@ -1,11 +1,12 @@
 import { all } from "redux-saga/effects";
 
-import reservations from "./reservations";
+import { getReservationsByDate, addNewReservation } from "./reservations";
 
 export default function* rootSaga() {
 
     const sagas = [
-        reservations,
+        getReservationsByDate,
+        addNewReservation
     ];
 
     yield all(sagas);

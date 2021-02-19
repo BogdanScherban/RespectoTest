@@ -15,6 +15,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
     getDevicesInfo: currentDate => {
         dispatch(reservationsAction.request(currentDate));
+    },
+    handleSubmit: (e, data) => {
+        e.preventDefault();
+        dispatch(reservationsAction.reserve(data));
     }
 });
 

@@ -15,7 +15,23 @@ export function getReservationsByDay(data) {
     });
 }
 
-const devices = [
+export function updateDevicesInfo(data) {
+    return devices.map(item => {
+        if (item.id === data.device) {
+            let from = Number(moment(data.date + ' ' + data.from).format('X'));
+            let to = Number(moment(data.date + ' ' + data.to).format('X'));
+            item.reservations.push({
+                id: item.id,
+                user_id: 1,
+                from: from,
+                to: to,
+            });
+        }
+        return item;
+    });
+}
+
+export const devices = [
     {
         id: 1,
         model: 'HTC One M8',

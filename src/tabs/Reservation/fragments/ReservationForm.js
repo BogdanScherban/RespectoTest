@@ -1,11 +1,16 @@
 import React, {useState} from 'react';
+import moment from 'moment';
+
+import { Field, reduxForm } from 'redux-form'
 
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from "@material-ui/core/Typography";
 
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
-import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
+
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 
@@ -33,16 +38,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ReservationForm = ({ devices }) => {
+const ReservationForm = ({ devices, currentDate, onSubmit }) => {
 
     const classes = useStyles();
 
     const [state, setState] = useState({
+        date: moment(currentDate).format('YYYY-MM-DD'),
         device: null,
-        from: null,
-        to: null,
+        from: '09:00',
+        to: '18:00',
     });
-
 
     const handleChange = (event) => {
         setState({
@@ -51,62 +56,126 @@ const ReservationForm = ({ devices }) => {
         })
     };
 
-    const { device, from, to } = state;
+    const { date, device, from, to } = state;
+
+    const DeviceSelector = () => (
+        <Select
+            labelId="deviceSelectorLabel"
+            id="deviceSelector"
+            name='device'
+            value={device}
+            onChange={handleChange}
+        >
+            <MenuItem value="">
+                <em>Not selected</em>
+            </MenuItem>
+            {
+                devices && devices.map(item => {
+                    return (
+                        <MenuItem value={item.id}>{item.model}</MenuItem>
+                    )
+                })
+            }
+        </Select>
+    );
+
+    const DateInput = () => {
+        return (
+            <TextField
+                id="date"
+                label="Date"
+                type="date"
+                name='date'
+                defaultValue={moment(currentDate).format('YYYY-MM-DD')}
+                className={classes.textField}
+                onChange={handleChange}
+                InputLabelProps={{
+                    shrink: true,
+                }}
+            />
+        )
+    };
+
+    const TimeFromInput = () => {
+        return (
+            <TextField
+                id="time-from"
+                label="From"
+                type="time"
+                name='from'
+                value={from}
+                defaultValue="09:00"
+                className={classes.textField}
+                onChange={handleChange}
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                inputProps={{
+                    step: 1800,
+                }}
+            />
+        )
+    };
+
+    const TimeToInput = () => {
+        return (
+            <TextField
+                id="time-to"
+                label="To"
+                type="time"
+                name='to'
+                value={to}
+                defaultValue="18:00"
+                onChange={handleChange}
+                className={classes.textField}
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                inputProps={{
+                    step: 1800,
+                }}
+            />
+        )
+    };
 
     return (
         <div className={classes.root}>
-            <form className={classes.container} noValidate>
+            <Typography>Add new reservation:</Typography>
+            <form className={classes.container} onSubmit={e => onSubmit(e, state)}>
                 <FormControl className={classes.formControl}>
                     <InputLabel id="deviceSelectorLabel">Device</InputLabel>
-                    <Select
-                        labelId="deviceSelectorLabel"
-                        id="deviceSelector"
-                        name='device'
+                    <Field
+                        name="device"
+                        value={date}
+                        component={DeviceSelector}
+                        required={true}
+                    />
+                </FormControl>
+                <FormControl className={classes.formControl}>
+                    <Field
+                        name="device"
                         value={device}
-                        onChange={handleChange}
-                    >
-                        <MenuItem value="">
-                            <em>Not selected</em>
-                        </MenuItem>
-                        {
-                            devices && devices.map(item => {
-                                return (
-                                    <MenuItem value={item.id}>{item.model}</MenuItem>
-                                )
-                            })
-                        }
-                    </Select>
+                        component={DateInput}
+                        required={true}
+                    />
                 </FormControl>
                 <FormControl className={classes.formControl}>
-                    <TextField
-                        id="datetime-local"
-                        label="From"
-                        type="datetime-local"
-                        name='from'
+                    <Field
+                        name="from"
                         value={from}
-                        className={classes.textField}
-                        onChange={handleChange}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
+                        component={TimeFromInput}
+                        required={true}
                     />
                 </FormControl>
                 <FormControl className={classes.formControl}>
-                    <TextField
-                        id="datetime-local"
-                        label="To"
-                        type="datetime-local"
-                        name='to'
+                    <Field
+                        name="to"
                         value={to}
-                        onChange={handleChange}
-                        className={classes.textField}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
+                        component={TimeToInput}
+                        required={true}
                     />
                 </FormControl>
-
-                <Button variant="contained" color="primary">
+                <Button type="submit" variant="contained" color="primary">
                     Save
                 </Button>
             </form>
@@ -114,4 +183,6 @@ const ReservationForm = ({ devices }) => {
     );
 };
 
-export default ReservationForm;
+export default reduxForm({
+    form: 'ReservationForm'
+})(ReservationForm);
