@@ -7,12 +7,13 @@ import ReservationComponent from './ReservationComponent';
 
 const mapStateToProps = state => {
     return {
-
+        reservations: get(state, 'reservations.data', []),
+        loading: get(state, 'reservations.loading', true)
     };
 };
 
 const mapDispatchToProps = dispatch => ({
-    getDevicesInfo(currentDate) {
+    getDevicesInfo: currentDate => {
         dispatch(reservationsAction.request(currentDate));
     }
 });

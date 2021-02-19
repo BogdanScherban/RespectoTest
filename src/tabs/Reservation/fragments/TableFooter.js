@@ -5,6 +5,8 @@ import Typography from "@material-ui/core/Typography";
 
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
+import { COLOR_FOR_OTHERS, COLOR_FOR_ME } from "./constants";
+
 const useStyles = makeStyles({
     root: {
         display: 'flex',
@@ -29,11 +31,11 @@ const useStyles = makeStyles({
         }
     },
     iconByOther: {
-        color: '#7CD9FF',
+        color: COLOR_FOR_OTHERS,
         marginRight: 5,
     },
     iconByMe: {
-        color: '#5925A8',
+        color: COLOR_FOR_ME,
         marginRight: 5,
     }
 });

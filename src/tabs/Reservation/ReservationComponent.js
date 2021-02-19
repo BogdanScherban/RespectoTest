@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 
 import Grid from '@material-ui/core/Grid';
-
+import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core";
 
 import Navigation from '../../common/Navigation';
 
-import DateSwitcher from '../../pages/reservations/DateSwitcher';
-import AddReservationButton from '../../pages/reservations/AddReservationButton';
-import ReservationsTable from '../../pages/reservations/ReservationsTable';
-import TableFooter from '../../pages/reservations/TableFooter';
-import ReservationForm from '../../pages/reservations/ReservationForm';
+import DateSwitcher from './fragments/DateSwitcher';
+import AddReservationButton from './fragments/AddReservationButton';
+import ReservationsTable from './fragments/ReservationsTable';
+import TableFooter from './fragments/TableFooter';
+import ReservationForm from './fragments/ReservationForm';
 
 const useStyles = makeStyles({
     root: {
@@ -19,21 +20,32 @@ const useStyles = makeStyles({
         backgroundColor: '#e7e7e7',
         paddingLeft: 20,
         paddingRight: 20,
+    },
+    loadingBlock: {
+        margin: 10,
+        backgroundColor: '#e7e7e7',
+        paddingLeft: 20,
+        paddingRight: 20,
     }
 });
 
-const ReservationComponent = () => {
+const ReservationComponent = ({ reservations, loading, getDevicesInfo }) => {
     const classes = useStyles();
 
     const [tableMode, setTableMode] = useState(true);
+    const [currentDate, setCurrentDate] = useState(moment().format('ll'));
+
     const switchMode = () => {
         setTableMode(!tableMode);
     };
 
-    const devices = [
-        { id: 1, model: 'HTC One M8', sku: 'HT519WM00429', },
-        { id: 2, model: 'Motorola Moto X 2014', sku: 'TA9890AQPQ', },
-    ];
+    const changeDate = (newDate) => {
+        setCurrentDate(moment(newDate).format('ll'));
+    };
+
+    useEffect(() => {
+        getDevicesInfo(currentDate);
+    }, [currentDate]);
 
     return (
         <Navigation>
@@ -41,18 +53,24 @@ const ReservationComponent = () => {
                 <Grid container spacing={3}>
                     <Grid container item xs={12} direction="row" justify="space-between" alignItems="center">
                         <Grid item xs={2}>
-                            <DateSwitcher />
+                            <DateSwitcher currentDate={currentDate} changeDate={changeDate} />
                         </Grid>
                         <Grid container item xs={2} direction="row" justify="flex-end" alignItems="center">
                             <AddReservationButton mode={tableMode} switchMode={switchMode} />
                         </Grid>
                     </Grid>
-                    {!tableMode && <ReservationForm devices={devices} />}
+                    {!tableMode && <ReservationForm devices={reservations} />}
                     <Grid container item xs={12} direction="column" justify="space-between" alignItems="stretch">
-                        <React.Fragment>
-                            <ReservationsTable devices={devices} />
-                            <TableFooter />
-                        </React.Fragment>
+                        {loading ?
+                            <div className={classes.loadingBlock}>
+                                <Typography>Loading...</Typography>
+                            </div>
+                            :
+                            <React.Fragment>
+                                <ReservationsTable devices={reservations} currentDate={currentDate} />
+                                <TableFooter />
+                            </React.Fragment>
+                        }
                     </Grid>
                 </Grid>
             </div>

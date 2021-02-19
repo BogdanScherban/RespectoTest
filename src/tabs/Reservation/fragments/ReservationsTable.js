@@ -12,7 +12,7 @@ const useStyles = makeStyles({
     },
 });
 
-const ReservationsTable = ({ devices }) => {
+const ReservationsTable = ({ devices, currentDate }) => {
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -21,7 +21,7 @@ const ReservationsTable = ({ devices }) => {
                     <DevicesList devices={devices} />
                 </Grid>
                 <Grid item xs={10}>
-                    <Timetable devices={devices} />
+                    <Timetable devices={devices} currentDate={currentDate} />
                 </Grid>
             </Grid>
         </div>

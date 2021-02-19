@@ -32,9 +32,9 @@ const DevicesList = ({ devices }) => {
                 </Typography>
             </div>
             {
-                devices && devices.map(item => {
+                devices && devices.map((item, key) => {
                     return (
-                        <div className={classes.tableRow}>
+                        <div className={classes.tableRow} key={key}>
                             <Typography variant="button">{item.model}</Typography>
                             <Typography variant="subtitle1">{item.sku}</Typography>
                         </div>

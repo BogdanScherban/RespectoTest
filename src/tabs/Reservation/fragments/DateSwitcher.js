@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 
 import {makeStyles} from "@material-ui/core";
 import IconButton from '@material-ui/core/IconButton';
@@ -16,9 +17,12 @@ const useStyles = makeStyles({
     },
 });
 
-const DateSwitcher = () => {
+const DateSwitcher = ({ currentDate, changeDate }) => {
 
     const classes = useStyles();
+
+    const dayBefore = moment(currentDate).subtract(1, 'days');
+    const dayAfter = moment(currentDate).add(1, 'days');
 
     return (
         <div className={classes.root}>
@@ -26,16 +30,18 @@ const DateSwitcher = () => {
                 variant="contained"
                 color="primary"
                 aria-label="back"
+                onClick={() => changeDate(dayBefore)}
             >
                 <ChevronLeft />
             </IconButton>
             <Typography>
-                Current date
+                {currentDate}
             </Typography>
             <IconButton
                 variant="contained"
                 color="primary"
                 aria-label="next"
+                onClick={() => changeDate(dayAfter)}
             >
                 <ChevronRight />
             </IconButton>
