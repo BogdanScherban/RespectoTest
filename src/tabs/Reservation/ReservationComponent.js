@@ -59,7 +59,7 @@ const ReservationComponent = ({ reservations, loading, getDevicesInfo, handleSub
                             <AddReservationButton mode={tableMode} switchMode={switchMode} />
                         </Grid>
                     </Grid>
-                    {!tableMode && <ReservationForm devices={reservations} currentDate={currentDate} onSubmit={handleSubmit} />}
+                    {!tableMode && <ReservationForm devices={reservations} currentDate={currentDate} onSubmit={handleSubmit} switchMode={switchMode} />}
                     <Grid container item xs={12} direction="column" justify="space-between" alignItems="stretch">
                         {!reservations || loading ?
                             <div className={classes.loadingBlock}>

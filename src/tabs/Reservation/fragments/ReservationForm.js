@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ReservationForm = ({ devices, currentDate, onSubmit }) => {
+const ReservationForm = ({ devices, currentDate, onSubmit, switchMode }) => {
 
     const classes = useStyles();
 
@@ -54,6 +54,12 @@ const ReservationForm = ({ devices, currentDate, onSubmit }) => {
             ...state,
             [event.target.name]: event.target.value
         })
+    };
+
+    const handleSubmit = (e, data) => {
+        e.preventDefault();
+        onSubmit(data);
+        switchMode();
     };
 
     const { date, device, from, to } = state;
@@ -138,7 +144,7 @@ const ReservationForm = ({ devices, currentDate, onSubmit }) => {
     return (
         <div className={classes.root}>
             <Typography>Add new reservation:</Typography>
-            <form className={classes.container} onSubmit={e => onSubmit(e, state)}>
+            <form className={classes.container} onSubmit={e => handleSubmit(e, state)}>
                 <FormControl className={classes.formControl}>
                     <InputLabel id="deviceSelectorLabel">Device</InputLabel>
                     <Field

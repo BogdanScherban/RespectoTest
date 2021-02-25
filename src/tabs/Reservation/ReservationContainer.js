@@ -16,8 +16,7 @@ const mapDispatchToProps = dispatch => ({
     getDevicesInfo: currentDate => {
         dispatch(reservationsAction.request(currentDate));
     },
-    handleSubmit: (e, data) => {
-        e.preventDefault();
+    handleSubmit: (data) => {
         dispatch(reservationsAction.reserve(data));
     }
 });
