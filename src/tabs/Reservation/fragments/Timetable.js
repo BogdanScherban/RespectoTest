@@ -102,6 +102,6 @@ const Timetable = ({ classes, devices, currentDate }) => {
                 })}
             </div>
         );
-}
+};
 
 export default withStyles(useStyles)(Timetable);
