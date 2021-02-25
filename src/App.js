@@ -7,7 +7,6 @@ import store from './redux/store';
 import Devices from './tabs/Devices';
 import Reservations from './tabs/Reservation';
 
-
 const App = () => {
 
   return (

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -30,10 +30,7 @@ const useStyles = {
     },
 };
 
-class Timetable extends Component {
-
-    render() {
-        const { classes, devices, currentDate } = this.props;
+const Timetable = ({ classes, devices, currentDate }) => {
 
         let hours = [];
         for (let i = 0; i <= 24; i++) {
@@ -55,55 +52,45 @@ class Timetable extends Component {
                             {
                                 devices.map((item, key) => {
 
+
                                     let reservations = item.reservations;
                                     let isLeftReserved = false;
                                     let isRightReserved = false;
-                                    let isCurrentUser = false;
-                                    reservations.forEach(item => {
+                                    let style = null;
+
+                                    reservations.forEach(reservation => {
 
                                         let hourFrom = Number(moment(currentDate + ' ' + hour + ':00:00').format('X'));
                                         let hourMiddle = hourFrom + 1800;
                                         let hourTo = hourFrom + 3600;
 
-                                        if (Number(item.user_id) === 1) {
-                                            isCurrentUser = true;
-                                        }
-                                        if (Number(hourFrom) === Number(item.from) || (Number(hourFrom) > Number(item.from) && Number(hourMiddle) <= Number(item.to))) {
+                                        let color = (Number(reservation.user_id) === 1) ? COLOR_FOR_ME : COLOR_FOR_OTHERS;
+
+                                        if (Number(hourFrom) === Number(reservation.from) || (Number(hourFrom) > Number(reservation.from) && Number(hourMiddle) <= Number(reservation.to))) {
                                             isLeftReserved = true;
-                                            console.log('LEFT');
-
                                         }
-                                        if (Number(hourMiddle) === Number(item.from) || (Number(hourMiddle) > Number(item.from) && Number(hourTo) <= Number(item.to))) {
+                                        if (Number(hourMiddle) === Number(reservation.from) || (Number(hourMiddle) > Number(reservation.from) && Number(hourTo) <= Number(reservation.to))) {
                                             isRightReserved = true;
-                                            console.log('RIGHT');
+                                        }
 
+                                        if (isLeftReserved && isRightReserved) {
+                                            style = {
+                                                backgroundColor: color,
+                                                borderLeftColor: color,
+                                                borderRightColor: color,
+                                            };
+                                        } else if (isLeftReserved) {
+                                            style = {
+                                                backgroundImage: 'linear-gradient(to right, ' + color + ' 50%, #ffffff 50%)',
+                                                borderLeftColor: color,
+                                            };
+                                        } else if (isRightReserved) {
+                                            style = {
+                                                backgroundImage: 'linear-gradient(to right, #ffffff 50%, ' + color + ' 50%)',
+                                                borderRightColor: color,
+                                            };
                                         }
                                     });
-
-
-                                    let style = null;
-                                    if (isLeftReserved && isRightReserved) {
-                                        let color = isCurrentUser ? COLOR_FOR_ME : COLOR_FOR_OTHERS;
-                                        style = {
-                                            backgroundColor: color,
-                                            borderLeftColor: color,
-                                            borderRightColor: color,
-                                        };
-                                    } else if (isLeftReserved) {
-                                        let color = isCurrentUser ? COLOR_FOR_ME : COLOR_FOR_OTHERS;
-                                        style = {
-                                            backgroundImage: 'linear-gradient(to right, ' + color + ' 50%, #ffffff 50%)',
-                                            borderLeftColor: color,
-                                        };
-                                    } else if (isRightReserved) {
-                                        let color = isCurrentUser ? COLOR_FOR_ME : COLOR_FOR_OTHERS;
-                                        style = {
-                                            backgroundImage: 'linear-gradient(to right, #ffffff 50%, ' + color + ' 50%)',
-                                            borderRightColor: color,
-                                        };
-                                    }
-
-                                    console.log('style', style);
 
                                     return (
                                         <div key={'cell-' + key + '-item-' + item.from + '-' + item.to} className={classes.tableRow} style={style}></div>
@@ -115,7 +102,6 @@ class Timetable extends Component {
                 })}
             </div>
         );
-    }
 }
 
 export default withStyles(useStyles)(Timetable);
