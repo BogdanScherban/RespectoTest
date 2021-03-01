@@ -89,7 +89,7 @@ const ReservationForm = ({ devices, currentDate, onSubmit, switchMode }) => {
                 label="Date"
                 type="date"
                 name='date'
-                defaultValue={moment(currentDate).format('YYYY-MM-DD')}
+                defaultValue={moment(date).format('YYYY-MM-DD')}
                 className={classes.textField}
                 onChange={handleChange}
                 InputLabelProps={{

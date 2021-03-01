@@ -9,8 +9,9 @@ import { COLOR_FOR_OTHERS, COLOR_FOR_ME } from "./constants";
 const useStyles = {
     root: {
         backgroundColor: '#ffffff',
-        overflow: 'auto',
+        overflowX: 'scroll',
         whiteSpace: 'nowrap',
+        width: 1400,
     },
     column: {
         display: 'inline-block',

@@ -15,6 +15,19 @@ export function getReservationsByDay(total, data) {
     });
 }
 
+function isDeviceAvailable(from, to, reservations) {
+    let isAvailable = true;
+    reservations.forEach(reservation => {
+       if ((Number(reservation.from) <= Number(from) && Number(reservation.to) > Number(from))
+           || (Number(reservation.from) < Number(to) && Number(reservation.to) > Number(to))
+           || (Number(reservation.from) === from && Number(reservation.to) === to)
+       ) {
+           isAvailable = false;
+       }
+    });
+    return isAvailable;
+}
+
 export function updateDevicesInfo(data) {
     if (!data.device) {
         return devices;
@@ -23,12 +36,15 @@ export function updateDevicesInfo(data) {
         if (item.id === data.device) {
             let from = Number(moment(data.date + ' ' + data.from).format('X'));
             let to = Number(moment(data.date + ' ' + data.to).format('X'));
-            item.reservations.push({
-                id: item.id,
-                user_id: 1,
-                from: from,
-                to: to,
-            });
+
+            if (isDeviceAvailable(from, to, item.reservations)) {
+                item.reservations.push({
+                    id: item.id,
+                    user_id: 1,
+                    from: from,
+                    to: to,
+                });
+            }
         }
         return item;
     });
