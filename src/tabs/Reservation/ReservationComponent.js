@@ -26,6 +26,9 @@ const useStyles = makeStyles({
         backgroundColor: '#e7e7e7',
         paddingLeft: 20,
         paddingRight: 20,
+    },
+    container: {
+        overflowX: 'hidden'
     }
 });
 
@@ -60,7 +63,7 @@ const ReservationComponent = ({ reservations, loading, getDevicesInfo, handleSub
                         </Grid>
                     </Grid>
                     {!tableMode && <ReservationForm devices={reservations} currentDate={currentDate} onSubmit={handleSubmit} switchMode={switchMode} />}
-                    <Grid container item xs={12} direction="column" justify="space-between" alignItems="stretch">
+                    <Grid className={classes.container} container item xs={12} direction="column" justify="space-between" alignItems="stretch">
                         {!reservations || loading ?
                             <div className={classes.loadingBlock}>
                                 <Typography>Loading...</Typography>

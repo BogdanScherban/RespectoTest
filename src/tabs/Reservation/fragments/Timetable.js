@@ -11,7 +11,6 @@ const useStyles = {
         backgroundColor: '#ffffff',
         overflowX: 'scroll',
         whiteSpace: 'nowrap',
-        width: 1400,
     },
     column: {
         display: 'inline-block',

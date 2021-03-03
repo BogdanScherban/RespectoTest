@@ -9,6 +9,7 @@ import Timetable from './Timetable';
 const useStyles = makeStyles({
     root: {
         backgroundColor: '#ffffff',
+        overflowX: 'hidden',
     },
 });
 
