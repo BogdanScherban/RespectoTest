@@ -30,17 +30,19 @@ const DateSwitcher = ({ currentDate, changeDate }) => {
                 variant="contained"
                 color="primary"
                 aria-label="back"
+                data-cy="Previous"
                 onClick={() => changeDate(dayBefore)}
             >
                 <ChevronLeft />
             </IconButton>
-            <Typography>
+            <Typography data-cy="currentData">
                 {currentDate}
             </Typography>
             <IconButton
                 variant="contained"
                 color="primary"
                 aria-label="next"
+                data-cy="Next"
                 onClick={() => changeDate(dayAfter)}
             >
                 <ChevronRight />

@@ -70,6 +70,7 @@ const ReservationForm = ({ devices, currentDate, onSubmit, switchMode }) => {
             id="deviceSelector"
             name='device'
             value={device}
+            data-cy="deviceSelector"
             onChange={handleChange}
         >
             {
